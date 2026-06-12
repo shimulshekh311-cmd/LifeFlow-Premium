@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LifeFlow Premium</string>
+    <string name="welcome_back">Welcome to LifeFlow</string>
+    <string name="daily_motto">Quiet the mind, find your flow.</string>
+    <string name="habit_tracker_title">Daily Habits</string>
+    <string name="add_habit_hint">Add a new daily habit...</string>
+    <string name="water_intake_label">Water Intake (250ml units)</string>
+    <string name="breathing_timer_label">Daily Breathing Session</string>
+    <string name="streak_prefix">Current Streak: %d days</string>
+</resources>

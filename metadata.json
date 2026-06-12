@@ -1,0 +1,6 @@
+{
+  "name": "LifeFlow Premium Companion",
+  "description": "Companion and customizer web portal for LifeFlow Premium, synchronized with AndroidIDE to build native habit tracking & zen apps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
