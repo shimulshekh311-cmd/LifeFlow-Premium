@@ -238,7 +238,7 @@ fun LifeFlowScreen(modifier: Modifier = Modifier) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Typographic Greetings: Light "Hello", Medium "World"
+            // Typographic Greetings: Bold "Hello", Bold "World"
             Row(
               verticalAlignment = Alignment.CenterVertically,
               horizontalArrangement = Arrangement.Center
@@ -247,7 +247,7 @@ fun LifeFlowScreen(modifier: Modifier = Modifier) {
                 text = "Hello ",
                 style = MaterialTheme.typography.headlineLarge.copy(
                   fontSize = 44.sp,
-                  fontWeight = FontWeight.Light,
+                  fontWeight = FontWeight.Bold,
                   color = PolishPrimary
                 ),
                 modifier = Modifier.testTag("hello_text")
@@ -256,7 +256,7 @@ fun LifeFlowScreen(modifier: Modifier = Modifier) {
                 text = "World",
                 style = MaterialTheme.typography.headlineLarge.copy(
                   fontSize = 44.sp,
-                  fontWeight = FontWeight.Medium,
+                  fontWeight = FontWeight.Bold,
                   color = OnBgCharcoal
                 ),
                 modifier = Modifier.testTag("world_text")
