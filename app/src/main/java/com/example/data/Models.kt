@@ -10,7 +10,8 @@ data class Habit(
     val description: String = "",
     val streak: Int = 0,
     val lastCompletedTimestamp: Long = 0L,
-    val isCompletedToday: Boolean = false
+    val isCompletedToday: Boolean = false,
+    val category: String = "General"
 )
 
 @Entity(tableName = "study_sessions")

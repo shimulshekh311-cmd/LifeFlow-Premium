@@ -153,7 +153,7 @@ fun LifeFlowAppScreen(modifier: Modifier = Modifier) {
                 AppTab.HABIT -> {
                     HabitScreen(
                         habits = habits,
-                        onAddHabit = { name, desc -> viewModel.addHabit(name, desc) },
+                        onAddHabit = { name, desc, category -> viewModel.addHabit(name, desc, category) },
                         onToggleHabit = { habit -> viewModel.toggleHabit(habit) },
                         onDeleteHabit = { id -> viewModel.deleteHabit(id) },
                         modifier = Modifier.fillMaxSize()

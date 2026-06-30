@@ -111,9 +111,9 @@ class LifeFlowViewModel(application: Application) : AndroidViewModel(application
     }
 
     // Habits Operations
-    fun addHabit(name: String, description: String) {
+    fun addHabit(name: String, description: String, category: String = "General") {
         viewModelScope.launch {
-            repository.insertHabit(Habit(name = name, description = description))
+            repository.insertHabit(Habit(name = name, description = description, category = category))
         }
     }
 
