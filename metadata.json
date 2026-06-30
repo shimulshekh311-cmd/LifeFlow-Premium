@@ -1,0 +1,6 @@
+{
+  "name": "LifeFlow",
+  "description": "A beautifully crafted Hello World starting point for LifeFlow, designed with Compose.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
