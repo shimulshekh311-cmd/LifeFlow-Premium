@@ -1,6 +1,6 @@
 {
   "name": "LifeFlow",
-  "description": "A beautifully crafted Hello World starting point for LifeFlow, designed with Compose.",
+  "description": "A beautiful 5-tab wellness workspace featuring a Dashboard, Habit Tracker, Study Timer, Exercise Logger, and Canvas Statistics.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

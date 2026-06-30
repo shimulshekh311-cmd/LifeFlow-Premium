@@ -1,4 +1,5 @@
 import com.google.gms.googleservices.GoogleServicesPlugin.MissingGoogleServicesStrategy
+import java.util.Base64
 
 plugins {
   alias(libs.plugins.android.application)
@@ -8,6 +9,20 @@ plugins {
   alias(libs.plugins.roborazzi)
   alias(libs.plugins.secrets)
   alias(libs.plugins.google.services)
+}
+
+// Automatically decode debug.keystore from debug.keystore.base64 if it is missing
+val base64File = file("${rootDir}/debug.keystore.base64")
+val keystoreFile = file("${rootDir}/debug.keystore")
+if (base64File.exists() && !keystoreFile.exists()) {
+  try {
+    val base64Content = base64File.readText().replace("\\s".toRegex(), "")
+    val decodedBytes = Base64.getDecoder().decode(base64Content)
+    keystoreFile.writeBytes(decodedBytes)
+    logger.lifecycle("Successfully generated debug.keystore from debug.keystore.base64")
+  } catch (e: java.lang.Exception) {
+    logger.error("Failed to automatically generate debug.keystore", e)
+  }
 }
 
 android {
@@ -86,7 +101,7 @@ dependencies {
   // implementation(libs.androidx.camera.lifecycle)
   // implementation(libs.androidx.camera.view)
   implementation(libs.androidx.compose.material.icons.core)
-  // implementation(libs.androidx.compose.material.icons.extended)
+  implementation(libs.androidx.compose.material.icons.extended)
   implementation(libs.androidx.compose.material3)
   implementation(libs.androidx.compose.ui)
   implementation(libs.androidx.compose.ui.graphics)

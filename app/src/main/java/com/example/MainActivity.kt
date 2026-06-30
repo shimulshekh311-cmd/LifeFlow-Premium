@@ -4,532 +4,232 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.EaseInOutSine
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui.theme.MyApplicationTheme
-import com.example.ui.theme.WarmBg
-import com.example.ui.theme.OnBgCharcoal
-import com.example.ui.theme.PolishPrimary
-import com.example.ui.theme.SurfaceCard
-import com.example.ui.theme.BorderLight
-import com.example.ui.theme.SecondaryBadge
-import com.example.ui.theme.OnSecondaryBadge
-import com.example.ui.theme.SupportText
-import com.example.ui.theme.BorderDivider
-import com.example.ui.theme.BottomNavBg
-import kotlinx.coroutines.delay
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ui.*
+import com.example.ui.theme.*
+import com.example.viewmodel.LifeFlowViewModel
 
 class MainActivity : ComponentActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    enableEdgeToEdge()
-    setContent {
-      MyApplicationTheme {
-        Scaffold(
-          modifier = Modifier
-            .fillMaxSize()
-            .testTag("main_scaffold"),
-          contentWindowInsets = WindowInsets.safeDrawing
-        ) { innerPadding ->
-          LifeFlowScreen(
-            modifier = Modifier
-              .fillMaxSize()
-              .padding(innerPadding)
-          )
-        }
-      }
-    }
-  }
-}
-
-@Composable
-fun LifeFlowScreen(modifier: Modifier = Modifier) {
-  var isBreathingActive by remember { mutableStateOf(false) }
-  var breathPhase by remember { mutableStateOf("Inhale") }
-  
-  // Manage the automated breathing cycle when active
-  LaunchedEffect(isBreathingActive) {
-    if (isBreathingActive) {
-      while (true) {
-        breathPhase = "Inhale"
-        delay(4000)
-        breathPhase = "Hold"
-        delay(2000)
-        breathPhase = "Exhale"
-        delay(4000)
-        breathPhase = "Rest"
-        delay(2000)
-      }
-    } else {
-      breathPhase = "Inhale"
-    }
-  }
-
-  Box(
-    modifier = modifier
-      .background(WarmBg)
-      .testTag("main_container")
-  ) {
-    // Top Content Layout
-    Column(
-      modifier = Modifier
-        .fillMaxSize(),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.SpaceBetween
-    ) {
-      // Top section: Top App Bar conforming to Professional Polish
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start,
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(64.dp)
-          .padding(horizontal = 16.dp)
-      ) {
-        Box(
-          modifier = Modifier
-            .size(48.dp)
-            .clip(CircleShape)
-            .clickable { /* Handle click navigation */ }
-            .testTag("top_bar_menu"),
-          contentAlignment = Alignment.Center
-        ) {
-          Icon(
-            imageVector = Icons.Default.Menu,
-            contentDescription = "Navigation Menu",
-            tint = OnBgCharcoal,
-            modifier = Modifier.size(24.dp)
-          )
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-          text = "LifeFlow",
-          style = MaterialTheme.typography.titleLarge.copy(
-            fontWeight = FontWeight.Normal,
-            color = OnBgCharcoal
-          ),
-          modifier = Modifier.testTag("top_bar_title")
-        )
-      }
-
-      // Middle section: Central Professional Polish card
-      Box(
-        modifier = Modifier
-          .weight(1f)
-          .fillMaxWidth()
-          .padding(horizontal = 24.dp),
-        contentAlignment = Alignment.Center
-      ) {
-        Card(
-          shape = RoundedCornerShape(28.dp),
-          colors = CardDefaults.cardColors(
-            containerColor = SurfaceCard
-          ),
-          border = BorderStroke(1.dp, BorderLight),
-          elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-          modifier = Modifier
-            .fillMaxWidth()
-            .widthIn(max = 380.dp)
-            .testTag("hero_card")
-        ) {
-          Column(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(28.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-          ) {
-            // AndroidIDE 2.7.1 Beta Build Indicator Badge
-            Surface(
-              shape = RoundedCornerShape(100.dp),
-              color = SecondaryBadge,
-              modifier = Modifier.testTag("build_badge")
-            ) {
-              Row(
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                verticalAlignment = Alignment.CenterVertically
-              ) {
-                Box(
-                  modifier = Modifier
-                    .size(8.dp)
-                    .background(PolishPrimary, CircleShape)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                  text = "BUILD: 2.7.1 BETA",
-                  style = MaterialTheme.typography.labelSmall.copy(
-                    letterSpacing = 1.2.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = OnSecondaryBadge
-                  )
-                )
-              }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Typographic Greetings: Bold "Hello", Bold "World"
-            Row(
-              verticalAlignment = Alignment.CenterVertically,
-              horizontalArrangement = Arrangement.Center
-            ) {
-              Text(
-                text = "Hello ",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                  fontSize = 44.sp,
-                  fontWeight = FontWeight.Bold,
-                  color = PolishPrimary
-                ),
-                modifier = Modifier.testTag("hello_text")
-              )
-              Text(
-                text = "World",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                  fontSize = 44.sp,
-                  fontWeight = FontWeight.Bold,
-                  color = OnBgCharcoal
-                ),
-                modifier = Modifier.testTag("world_text")
-              )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Horizontal Divider
-            Box(
-              modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(BorderDivider)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Elegant Supportive Text
-            Text(
-              text = "Step 1: Initialization complete.\nAwaiting feature implementation.",
-              style = MaterialTheme.typography.bodyMedium.copy(
-                color = SupportText,
-                lineHeight = 22.sp,
-                textAlign = TextAlign.Center
-              ),
-              modifier = Modifier
-                .fillMaxWidth()
-                .testTag("support_instructions")
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Interactive Flow Breathing feature (Preserved & Polished)
-            AnimatedVisibility(
-              visible = isBreathingActive,
-              enter = fadeIn(animationSpec = tween(1500)),
-              exit = fadeOut(animationSpec = tween(500))
-            ) {
-              val breathScale by animateFloatAsState(
-                targetValue = when (breathPhase) {
-                  "Inhale" -> 1.4f
-                  "Hold" -> 1.4f
-                  "Exhale" -> 1.0f
-                  else -> 1.0f
-                },
-                animationSpec = tween(
-                  durationMillis = if (breathPhase == "Inhale" || breathPhase == "Exhale") 4000 else 2000,
-                  easing = LinearEasing
-                ),
-                label = "breath_scale"
-              )
-
-              Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(bottom = 16.dp)
-              ) {
-                Box(
-                  contentAlignment = Alignment.Center,
-                  modifier = Modifier.size(100.dp)
-                ) {
-                  // Breathing Circle
-                  Box(
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            MyApplicationTheme {
+                Scaffold(
                     modifier = Modifier
-                      .size(54.dp)
-                      .scale(breathScale)
-                      .border(1.5.dp, PolishPrimary, CircleShape)
-                      .background(SecondaryBadge.copy(alpha = 0.4f), CircleShape)
-                  )
-
-                  // Text inside
-                  AnimatedContent(
-                    targetState = breathPhase,
-                    transitionSpec = {
-                      fadeIn(animationSpec = tween(300)) togetherWith fadeOut(animationSpec = tween(300))
-                    },
-                    label = "breath_phase"
-                  ) { phase ->
-                    Text(
-                      text = phase,
-                      style = MaterialTheme.typography.labelMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = OnSecondaryBadge
-                      )
+                        .fillMaxSize()
+                        .testTag("main_scaffold"),
+                    contentWindowInsets = WindowInsets.safeDrawing
+                ) { innerPadding ->
+                    LifeFlowAppScreen(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
                     )
-                  }
                 }
-              }
             }
-
-            // Elegant Button to trigger breathing
-            Button(
-              onClick = { isBreathingActive = !isBreathingActive },
-              colors = ButtonDefaults.buttonColors(
-                containerColor = if (isBreathingActive) Color(0xFFBA1A1A) else PolishPrimary,
-                contentColor = Color.White
-              ),
-              shape = RoundedCornerShape(100.dp),
-              modifier = Modifier
-                .testTag("breathe_button")
-                .height(44.dp)
-                .widthIn(min = 160.dp)
-            ) {
-              Text(
-                text = if (isBreathingActive) "Stop Breathing" else "Start Flow Breathing",
-                style = MaterialTheme.typography.labelLarge.copy(
-                  fontWeight = FontWeight.Bold
-                )
-              )
-            }
-          }
         }
-      }
-
-      // Bottom section: Mantra Quote
-      Text(
-        text = "“Let your life flow with mindfulness and modern simplicity.”",
-        style = MaterialTheme.typography.labelMedium.copy(
-          color = SupportText,
-          fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
-        ),
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-          .padding(horizontal = 24.dp, vertical = 8.dp)
-          .alpha(0.7f)
-      )
-
-      Spacer(modifier = Modifier.height(8.dp))
-
-      // Bottom Navigation Bar from Professional Polish
-      Surface(
-        color = BottomNavBg,
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(80.dp)
-          .testTag("bottom_nav")
-      ) {
-        Row(
-          modifier = Modifier.fillMaxSize(),
-          horizontalArrangement = Arrangement.SpaceAround,
-          verticalAlignment = Alignment.CenterVertically
-        ) {
-          // Home (Active)
-          Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.clickable { /* Home tab */ }
-          ) {
-            Box(
-              modifier = Modifier
-                .background(SecondaryBadge, RoundedCornerShape(100.dp))
-                .padding(horizontal = 20.dp, vertical = 4.dp),
-              contentAlignment = Alignment.Center
-            ) {
-              Icon(
-                imageVector = Icons.Default.Home,
-                contentDescription = "Home",
-                tint = OnSecondaryBadge,
-                modifier = Modifier.size(24.dp)
-              )
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-              text = "Home",
-              style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Bold,
-                color = OnBgCharcoal
-              )
-            )
-          }
-
-          // Tasks (Inactive)
-          Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-              .alpha(0.6f)
-              .clickable { /* Tasks tab */ }
-          ) {
-            Box(
-              modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 4.dp),
-              contentAlignment = Alignment.Center
-            ) {
-              Icon(
-                imageVector = Icons.Default.Edit,
-                contentDescription = "Tasks",
-                tint = OnBgCharcoal,
-                modifier = Modifier.size(24.dp)
-              )
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-              text = "Tasks",
-              style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Medium,
-                color = OnBgCharcoal
-              )
-            )
-          }
-
-          // Profile (Inactive)
-          Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-              .alpha(0.6f)
-              .clickable { /* Profile tab */ }
-          ) {
-            Box(
-              modifier = Modifier
-                .padding(horizontal = 20.dp, vertical = 4.dp),
-              contentAlignment = Alignment.Center
-            ) {
-              Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Profile",
-                tint = OnBgCharcoal,
-                modifier = Modifier.size(24.dp)
-              )
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-              text = "Profile",
-              style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Medium,
-                color = OnBgCharcoal
-              )
-            )
-          }
-        }
-      }
     }
-
-    // Floating Action Button (M3 format)
-    Box(
-      modifier = Modifier
-        .fillMaxSize()
-        .padding(bottom = 96.dp, end = 16.dp),
-      contentAlignment = Alignment.BottomEnd
-    ) {
-      Surface(
-        shape = RoundedCornerShape(16.dp),
-        color = SecondaryBadge,
-        shadowElevation = 4.dp,
-        modifier = Modifier
-          .size(56.dp)
-          .clickable { /* FAB Action */ }
-          .testTag("fab")
-      ) {
-        Box(
-          contentAlignment = Alignment.Center,
-          modifier = Modifier.fillMaxSize()
-        ) {
-          Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = "Add Item",
-            tint = OnSecondaryBadge,
-            modifier = Modifier.size(24.dp)
-          )
-        }
-      }
-    }
-  }
 }
 
-@Preview(showBackground = true, widthDp = 360, heightDp = 740)
+enum class AppTab(val title: String, val icon: ImageVector, val tag: String) {
+    DASHBOARD("Dashboard", Icons.Default.Dashboard, "tab_dashboard"),
+    HABIT("Habit", Icons.Default.CheckCircle, "tab_habit"),
+    STUDY("Study", Icons.Default.Timer, "tab_study"),
+    EXERCISE("Exercise", Icons.Default.FitnessCenter, "tab_exercise"),
+    STATISTICS("Statistics", Icons.Default.BarChart, "tab_statistics")
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LifeFlowScreenPreview() {
-  MyApplicationTheme {
-    LifeFlowScreen()
-  }
+fun LifeFlowAppScreen(modifier: Modifier = Modifier) {
+    val viewModel: LifeFlowViewModel = viewModel()
+
+    // Collect Room database flows with full lifecycle safety
+    val habits by viewModel.habits.collectAsStateWithLifecycle()
+    val studySessions by viewModel.studySessions.collectAsStateWithLifecycle()
+    val exerciseSessions by viewModel.exerciseSessions.collectAsStateWithLifecycle()
+
+    // Timer state
+    val timerSecondsLeft by viewModel.studyTimerSecondsLeft.collectAsStateWithLifecycle()
+    val isTimerRunning by viewModel.isStudyTimerRunning.collectAsStateWithLifecycle()
+    val selectedSubject by viewModel.selectedStudySubject.collectAsStateWithLifecycle()
+
+    var currentTab by remember { mutableStateOf(AppTab.DASHBOARD) }
+
+    // Pre-calculate metrics for dashboard display
+    val habitsCompletedCount = habits.count { it.isCompletedToday }
+    val habitsTotalCount = habits.size
+    val totalStudyMinutesToday = studySessions.sumOf { it.durationMinutes }
+    val exerciseCountToday = exerciseSessions.size
+
+    Column(
+        modifier = modifier
+            .background(WarmBg)
+            .testTag("main_container")
+    ) {
+        // Top App Bar conforming to Material 3 standard
+        CenterAlignedTopAppBar(
+            title = {
+                Text(
+                    text = currentTab.title,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = OnBgCharcoal,
+                        letterSpacing = 0.5.sp
+                    ),
+                    modifier = Modifier.testTag("top_bar_title")
+                )
+            },
+            navigationIcon = {
+                IconButton(
+                    onClick = { /* Open menu or info */ },
+                    modifier = Modifier.testTag("top_bar_menu")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = "Menu",
+                        tint = OnBgCharcoal
+                    )
+                }
+            },
+            actions = {
+                Surface(
+                    shape = CircleShape,
+                    color = SecondaryBadge,
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .size(36.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = Icons.Default.Spa,
+                            contentDescription = "Mindful",
+                            tint = PolishPrimary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
+            },
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = WarmBg
+            )
+        )
+
+        // Tab Content Area
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) {
+            when (currentTab) {
+                AppTab.DASHBOARD -> {
+                    DashboardScreen(
+                        habitsCompletedCount = habitsCompletedCount,
+                        habitsTotalCount = habitsTotalCount,
+                        totalStudyMinutes = totalStudyMinutesToday,
+                        exerciseSessionsCount = exerciseCountToday,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                AppTab.HABIT -> {
+                    HabitScreen(
+                        habits = habits,
+                        onAddHabit = { name, desc -> viewModel.addHabit(name, desc) },
+                        onToggleHabit = { habit -> viewModel.toggleHabit(habit) },
+                        onDeleteHabit = { id -> viewModel.deleteHabit(id) },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                AppTab.STUDY -> {
+                    StudyScreen(
+                        studySessions = studySessions,
+                        timerSecondsLeft = timerSecondsLeft,
+                        isTimerRunning = isTimerRunning,
+                        selectedSubject = selectedSubject,
+                        onSelectSubject = { viewModel.selectStudySubject(it) },
+                        onSetDuration = { viewModel.setStudyTimerDuration(it) },
+                        onToggleTimer = { viewModel.toggleStudyTimer() },
+                        onResetTimer = { viewModel.resetStudyTimer() },
+                        onDeleteSession = { id -> viewModel.deleteStudySession(id) },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                AppTab.EXERCISE -> {
+                    ExerciseScreen(
+                        exerciseSessions = exerciseSessions,
+                        onAddSession = { name, cat, dur -> viewModel.addExerciseSession(name, cat, dur) },
+                        onDeleteSession = { id -> viewModel.deleteExerciseSession(id) },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                AppTab.STATISTICS -> {
+                    StatisticsScreen(
+                        habits = habits,
+                        studySessions = studySessions,
+                        exerciseSessions = exerciseSessions,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+        }
+
+        // Bottom Navigation Bar with Standard M3 Layout and safe drawing padding
+        NavigationBar(
+            containerColor = BottomNavBg,
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .testTag("bottom_nav")
+        ) {
+            AppTab.values().forEach { tab ->
+                val isSelected = currentTab == tab
+                NavigationBarItem(
+                    selected = isSelected,
+                    onClick = { currentTab = tab },
+                    icon = {
+                        Icon(
+                            imageVector = tab.icon,
+                            contentDescription = tab.title,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = tab.title,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
+                            )
+                        )
+                    },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = OnSecondaryBadge,
+                        selectedTextColor = OnBgCharcoal,
+                        indicatorColor = SecondaryBadge,
+                        unselectedIconColor = SupportText.copy(alpha = 0.7f),
+                        unselectedTextColor = SupportText.copy(alpha = 0.7f)
+                    ),
+                    modifier = Modifier.testTag(tab.tag)
+                )
+            }
+        }
+    }
 }
-
-
